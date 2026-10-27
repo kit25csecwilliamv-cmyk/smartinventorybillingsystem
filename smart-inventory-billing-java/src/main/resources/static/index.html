@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Smart Inventory | Anna Traders</title>
+  <link rel="stylesheet" href="/styles.css">
+</head>
+<body>
+  <aside class="sidebar">
+    <div class="brand"><div class="brand-icon">AT</div><div><strong>Anna Traders</strong><small>Smart Management</small></div></div>
+    <nav>
+      <a class="active" href="#dashboard">▦ &nbsp; Dashboard</a>
+      <a href="#products">▣ &nbsp; Products & Stock</a>
+      <a href="#billing">▤ &nbsp; Create Bill</a>
+      <a href="#sales">◷ &nbsp; Sales History</a>
+    </nav>
+    <div class="side-note"><span class="status-dot"></span> Inventory system online</div>
+  </aside>
+
+  <main class="main">
+    <header class="topbar">
+      <div><p class="eyebrow">TRADING COMPANY / MANAGEMENT</p><h1>Inventory Dashboard</h1></div>
+      <div class="date-chip" id="todayDate">Today</div>
+    </header>
+
+    <section id="dashboard">
+      <div class="welcome">
+        <div><p class="eyebrow light">BUSINESS OVERVIEW</p><h2>Good business starts with clear numbers.</h2>
+          <p>Track stock, prepare bills, and monitor daily sales in one place.</p></div>
+        <div class="welcome-mark">↗</div>
+      </div>
+      <div class="stats-grid">
+        <article class="stat-card"><div class="stat-label">Total Products <span>▣</span></div><strong id="productCount">—</strong><small>Product types in catalogue</small></article>
+        <article class="stat-card"><div class="stat-label">Units in Stock <span>▤</span></div><strong id="stockUnits">—</strong><small>Total available quantity</small></article>
+        <article class="stat-card"><div class="stat-label">Low Stock Alerts <span>⚠</span></div><strong id="lowStockCount">—</strong><small>Products at or below minimum</small></article>
+        <article class="stat-card"><div class="stat-label">Today's Sales <span>₹</span></div><strong id="todaySales">₹0.00</strong><small><span id="billCount">0</span> bills today</small></article>
+      </div>
+    </section>
+
+    <section class="content-grid">
+      <article class="panel" id="products">
+        <div class="panel-head"><div><p class="eyebrow">CATALOGUE</p><h2>Products & Stock</h2></div><button class="primary" onclick="openProductForm()">＋ Add Product</button></div>
+        <div class="toolbar"><input id="searchBox" placeholder="Search product or category..." oninput="loadProducts()"><span id="productMessage" class="message"></span></div>
+        <div class="table-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Sell Price</th><th>Stock</th><th>Status</th><th>Action</th></tr></thead><tbody id="productRows"><tr><td colspan="6">Loading products...</td></tr></tbody></table></div>
+      </article>
+
+      <article class="panel" id="billing">
+        <div class="panel-head"><div><p class="eyebrow">CHECKOUT</p><h2>Create a Bill</h2></div><span class="pill">New sale</span></div>
+        <form id="billForm">
+          <label>Customer name<input id="customerName" required placeholder="Walk-in customer"></label>
+          <div class="bill-line"><label>Product<select id="billProduct" required></select></label><label>Qty<input id="billQty" type="number" min="1" value="1" required></label></div>
+          <button class="secondary full" type="button" onclick="addToCart()">Add item to bill</button>
+          <div id="cartList" class="cart-list"><p class="muted">No items added yet.</p></div>
+          <div class="bill-total"><span>Estimated total</span><strong id="cartTotal">₹0.00</strong></div>
+          <button class="primary full" type="submit">Complete Sale</button>
+          <p id="billMessage" class="message"></p>
+        </form>
+      </article>
+    </section>
+
+    <section class="panel low-panel">
+      <div class="panel-head"><div><p class="eyebrow">REORDER CHECK</p><h2>Low Stock Products</h2></div><span class="pill warning">Needs attention</span></div>
+      <div class="table-wrap"><table><thead><tr><th>Product</th><th>Category</th><th>Available</th><th>Minimum level</th></tr></thead><tbody id="lowStockRows"><tr><td colspan="4">Loading...</td></tr></tbody></table></div>
+    </section>
+
+    <section class="panel" id="sales">
+      <div class="panel-head"><div><p class="eyebrow">TRANSACTION LOG</p><h2>Recent Sales</h2></div><button class="secondary" onclick="loadSales()">↻ Refresh</button></div>
+      <div class="table-wrap"><table><thead><tr><th>Bill ID</th><th>Customer</th><th>Date & Time</th><th>Items</th><th>Total</th></tr></thead><tbody id="salesRows"><tr><td colspan="5">Loading sales...</td></tr></tbody></table></div>
+    </section>
+    <footer>Smart Inventory & Billing System <span>Java · Spring Boot · MySQL</span></footer>
+  </main>
+
+  <dialog id="productDialog">
+    <form id="productForm" method="dialog">
+      <div class="panel-head"><div><p class="eyebrow">PRODUCT CATALOGUE</p><h2 id="productFormTitle">Add Product</h2></div><button type="button" class="icon-button" onclick="closeProductForm()">✕</button></div>
+      <input type="hidden" id="editProductId">
+      <label>Product name<input id="productName" required maxlength="120" placeholder="e.g. LED Bulb 9W"></label>
+      <label>Category<input id="productCategory" required maxlength="80" placeholder="Electrical / Plumbing / Electronics"></label>
+      <div class="bill-line"><label>Purchase price (₹)<input id="purchasePrice" type="number" min="0" step="0.01" required></label><label>Selling price (₹)<input id="sellingPrice" type="number" min="0" step="0.01" required></label></div>
+      <div class="bill-line"><label>Stock quantity<input id="stockQuantity" type="number" min="0" required></label><label>Minimum stock<input id="minStockLevel" type="number" min="0" required value="5"></label></div>
+      <p id="productFormMessage" class="message"></p>
+      <div class="dialog-actions"><button type="button" class="secondary" onclick="closeProductForm()">Cancel</button><button type="submit" class="primary">Save Product</button></div>
+    </form>
+  </dialog>
+  <script src="/app.js"></script>
+</body>
+</html>
